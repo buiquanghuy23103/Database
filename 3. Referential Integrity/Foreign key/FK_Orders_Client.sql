@@ -1,0 +1,3 @@
+ALTER TABLE Orders 
+ADD CONSTRAINT FK_Client_Id FOREIGN KEY (ClientId)
+    REFERENCES Client(Id)

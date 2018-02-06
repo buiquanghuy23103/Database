@@ -1,0 +1,94 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+%===============CODE LISTING=======================
+\usepackage{listings}
+\usepackage{xcolor} % for setting colors
+
+% set the default code style
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+ 
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{green},
+    keywordstyle=\color{blue},
+    numberstyle=\tiny\color{gray},
+    stringstyle=\color{orange},
+    basicstyle={\small\ttfamily},
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+%Define more keywords
+\lstdefinelanguage[Oracle]{SQL}[]{SQL}{
+  morekeywords={procedure, replace, begin, use, go, references},
+} 
+%Define style and language
+\lstset{style=mystyle, language=[Oracle]{SQL}}
+%=================================
+\author{Huy Bui}
+\begin{document}
+\begin{tabular}{p{8cm}l}
+	\textbf{Huy Bui}		&	\textsc{DATABASE}			\\
+	Information Technology	&	\textbf{Referential integrity}	\\
+	T5616SN					&	30 January 2018				\\
+\end{tabular}
+\section{Referential integrity}
+\subsection{Introduction}
+A Referential integrity is a database concept that is used to build and maintain logical relationships between tables to avoid logical corruption of data. Usually, referential integrity is made up of the combination of a primary key and a foreign key. \\
+The main concept of Referential integrity is that it does not allow to add any record in a table that contains the foreign key unless the reference table containing a corresponding primary key. If any record in referenced table (i.e. the table who contain primary key) is deleted, all the corresponding records in the referencing table will be deleted for the referential integrity. 
+\subsection{Cascade} By using cascading referential integrity constraints, you can define the actions that the SQL Server takes when a user tries to delete or update a key to which existing foreign keys point. You can specify this kind of constraint using the REFERENCES clauses of the CREATE TABLE or ALTER TABLE statements, which support the ON DELETE and ON UPDATE clauses along with Cascading actions. The syntax is shown as below:
+\begin{lstlisting}
+ON DELETE { NO ACTION | CASCADE | SET NULL | SET DEFAULT } 
+\end{lstlisting}
+NO ACTION is the default if ON DELETE or ON UPDATE is not specified. ON DELETE NO ACTION specifies that if an attempt is made to delete a row with a key referenced by foreign keys in existing rows in other tables, an error is raised and the DELETE statement is rolled back. On the other hand, ON DELETE CASCADE specifies that if an attempt is made to delete a row with a key referenced by foreign keys in existing rows in other tables, all rows that contain those foreign keys are also deleted. 
+\section{Practical part}
+\subsection{Create foreign keys}
+At first, we create three tables (Client, Product, and Orders) using the following commands.
+%Begin in subfigure
+\lstinputlisting{CreateClient.sql}
+\lstinputlisting{CreateProduct.sql}
+\lstinputlisting{CreateOrders.sql}
+%End subfigure
+Next, we create two foreign keys in Orders table. The first one links the attribute ClientId in Orders table with the Id primary key in Client table.
+\lstinputlisting{FK_Orders_Client.sql}
+The second one links the attribute ProductId in Orders table with the Id primary key in Product table.
+\lstinputlisting{FK_Orders_Product.sql}
+You can also do this using GUI software such as SQL Server Management Studio:
+\begin{enumerate}
+	\item In Object Explorer, right-click the table that will be on the foreign-key side of the relationship and click \textbf{Design}. The table opens in \textbf{Table Designer}.
+	\item From the \textbf{Table Designer} menu, click \textbf{Relationships}.
+	\item In the \textbf{Foreign-key Relationships} dialog box, click \textbf{Add}. 
+	\item Click the relationship in the \textbf{Selected Relationship} list. 
+	\item Click \textbf{Tables and Columns Specification} in the grid to the right and click the ellipses (…) to the right of the property.
+	\item In the Tables and Columns dialog box, in the \textbf{Primary Key} drop-down list, choose the table that will be on the primary-key side of the relationship. 
+	\item In the grid beneath, choose the columns contributing to the table's primary key. In the adjacent grid cell to the left of each column, choose the corresponding foreign-key column of the foreign-key table. 
+	\item Choose \textbf{OK} to create the relationship.
+\end{enumerate}
+\subsection{Inserting data}
+To see how foreign keys work in action, we need first to insert data in each table using queries on Moodle page (InsertInClient.sql, InsertInOrders.sql, InsertInProduct.sql). At this point, please note that the order of inserting data does matter. Try to execute InsertInOrders.sql before the others, you will then see error messages. The reason is that data ClientId and ProductId attributes are references to that in Client and Product table, so it makes no sense to refer to non-existing data. Therefore, data must be inserted into Client and Product table first.
+\subsection{Delete Client} Try to delete a row in Client using the following command:
+\lstinputlisting{TryDeleteClient.sql}
+An error message appears and denies the DELETE statement. The reason is that ON DELETE NO ACTION is enabled by default and any attempts to delete any rows in Client table is prohibited. To be enable to remove a row from Client table, you have to enable cascading action. First, remove the existing constraint. Then, create the new one with cascading action:
+\lstinputlisting{FK_Orders_ClientWithCascade.sql}
+As for people who prefer GUI application, the following instruction shows how to modify Foreign Key in SQL Server Management Studio:
+\begin{enumerate}
+\item In \textbf{Object Explorer}, expand the table with the foreign key and then expand \textbf{Keys}.
+\item Right-click the foreign key to be modified and select \textbf{Modify}. 
+\item In the \textbf{Foreign Key Relationships} dialog box, you can make modifications. In our case, on \textbf{Delete Rule} drop-down list, choose \textbf{Cascade}.
+\item Close the window and Save the table.
+\item A dialog box will appear to ask you for confirmation to make changes on Client and Orders table. Choose Yes.
+\end{enumerate}
+\end{document}
