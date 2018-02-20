@@ -1,0 +1,38 @@
+\documentclass[a4paper]{article}
+    \usepackage{huy}
+\begin{document}
+    \intro{DATABASE}{Join operation}
+    \section{Join operation}
+    A JOIN clause is used to combine rows from two or more tables, based on a related column between them. For example, we can create the following SQL statement (that contains an INNER JOIN), that selects records that have matching values in both tables (CustomerID):
+    \begin{minted}{sql}
+        SELECT Orders.OrderID, Customers.CustomerName, Orders.OrderDate
+FROM Orders
+INNER JOIN Customers ON Orders.CustomerID=Customers.CustomerID; 
+    \end{minted}
+    There are different types of the JOINs in SQL: (INNER) JOIN, LEFT (OUTER) JOIN, RIGHT (OUTER) JOIN, FULL (OUTER) JOIN
+    \subsection{Inner Join}
+    The LEFT JOIN keyword returns all records from the left table (table1), and the matched records from the right table (table2). The result is NULL from the right side, if there is no match.
+    LEFT JOIN Syntax:
+    \begin{minted}{sql}
+        SELECT column_name(s)
+FROM table1
+LEFT JOIN table2 ON table1.column_name = table2.column_name;
+    \end{minted}
+    \subsection{Right Join}
+    The RIGHT JOIN keyword returns all records from the right table (table2), and the matched records from the left table (table1). The result is NULL from the left side, when there is no match.
+    Right Join Syntax:
+    \begin{minted}{sql}
+        SELECT column_name(s)
+FROM table1
+RIGHT JOIN table2 ON table1.column_name = table2.column_name;
+    \end{minted}
+    \subsection{Full Join}
+    The FULL OUTER JOIN keyword return all records when there is a match in either left (table1) or right (table2) table records.
+    Full Join Syntax:
+    \begin{minted}{sql}
+        SELECT column_name(s)
+FROM table1
+FULL JOIN table2 ON table1.column_name = table2.column_name;
+    \end{minted}
+    \section{Practical part}
+\end{document}
