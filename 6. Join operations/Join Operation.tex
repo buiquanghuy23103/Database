@@ -1,11 +1,12 @@
 \documentclass[a4paper]{article}
+\usepackage{minted}
     \usepackage{huy}
 \begin{document}
     \intro{DATABASE}{Join operation}
     \section{Join operation}
     A JOIN clause is used to combine rows from two or more tables, based on a related column between them. For example, we can create the following SQL statement (that contains an INNER JOIN), that selects records that have matching values in both tables (CustomerID):
     \begin{minted}{sql}
-        SELECT Orders.OrderID, Customers.CustomerName, Orders.OrderDate
+SELECT Orders.OrderID, Customers.CustomerName, Orders.OrderDate
 FROM Orders
 INNER JOIN Customers ON Orders.CustomerID=Customers.CustomerID; 
     \end{minted}
@@ -14,7 +15,7 @@ INNER JOIN Customers ON Orders.CustomerID=Customers.CustomerID;
     The LEFT JOIN keyword returns all records from the left table (table1), and the matched records from the right table (table2). The result is NULL from the right side, if there is no match.
     LEFT JOIN Syntax:
     \begin{minted}{sql}
-        SELECT column_name(s)
+SELECT column_name(s)
 FROM table1
 LEFT JOIN table2 ON table1.column_name = table2.column_name;
     \end{minted}
@@ -22,7 +23,7 @@ LEFT JOIN table2 ON table1.column_name = table2.column_name;
     The RIGHT JOIN keyword returns all records from the right table (table2), and the matched records from the left table (table1). The result is NULL from the left side, when there is no match.
     Right Join Syntax:
     \begin{minted}{sql}
-        SELECT column_name(s)
+SELECT column_name(s)
 FROM table1
 RIGHT JOIN table2 ON table1.column_name = table2.column_name;
     \end{minted}
@@ -30,9 +31,22 @@ RIGHT JOIN table2 ON table1.column_name = table2.column_name;
     The FULL OUTER JOIN keyword return all records when there is a match in either left (table1) or right (table2) table records.
     Full Join Syntax:
     \begin{minted}{sql}
-        SELECT column_name(s)
+SELECT column_name(s)
 FROM table1
 FULL JOIN table2 ON table1.column_name = table2.column_name;
     \end{minted}
     \section{Practical part}
+    \begin{enumerate}
+    \item List some information of all private owners, along with some information of their properties for rent. \inputminted{sql}{SQLQuery1.sql}
+    \item Find the number of properties handled by each staff member. \inputminted{sql}{SQLQuery2.sql}
+    \item Check if each staff member has at least one property for rent to manage using LEFT JOIN. \inputminted{sql}{SQLQuery3.sql}
+    \item Check if each property for rent is managed by a staff member using RIGHT JOIN. \inputminted{sql}{SQLQuery4.sql}
+    \item List what is available for rent in the company. TypeOfProperty serves as major sort key and Rent as minor sort key. \inputminted{sql}{SQLQuery5.sql}
+    \item List the names of all clients who have viewed a property, along with any comments supplied. The list is organized in alphabetical order of FamilyName. \inputminted{sql}{SQLQuery6.sql}
+    \item List the names of all clients who have viewed a property, but exclude those who did not give any comments.\inputminted{sql}{SQLQuery7.sql}
+    \item List the names of all staff and the street address where they work. The list is organized in alphabetical order of FamilyName.\inputminted{sql}{SQLQuery8.sql}
+    \item List all owners for the properties for rent and what do they own.\inputminted{sql}{SQLQuery9.sql}
+    \item Show what kind of properties each branch offers. Street from Branch table serves as major sort key and column TypeOfProperty as minor sort key.\inputminted{sql}{SQLQuery10.sql}
+    \end{enumerate}
+    
 \end{document}
