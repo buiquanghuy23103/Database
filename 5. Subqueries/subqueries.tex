@@ -19,27 +19,17 @@ WHERE branchNo =(SELECT branchNo
 \end{minted}
 \caption{A scalar subquery}\label{scalar-subquery}
 \end{listing}
-Many Transact-SQL statements that include subqueries can be alternatively formulated as joins. The following is an example showing a join SELECT that return the same result set as the previous example:
-\begin{lstlisting}[language=SQL,style=cool]
-SELECT Prd1. Name
-FROM AdventureWorks2008R2.Production.Product AS Prd1
-     JOIN AdventureWorks2008R2.Production.Product AS Prd2
-       ON (Prd1.ListPrice = Prd2.ListPrice)
-WHERE Prd2. Name = 'Chainring Bolts';
-\end{lstlisting}
-The SELECT query of a subquery is always enclosed in parentheses. A subquery can be nested inside the WHERE or HAVING clause of an outer SELECT, INSERT, UPDATE, or DELETE statement, or inside another subquery. A subquery can appear anywhere an expression can be used, if it returns a single value. If a table appears only in a subquery and not in the outer query, then columns from that table cannot be included in the output (the select list of the outer query).
+We can think of the subquery as producing a temporary table with results that can be accessed and used by the outer statement. The subquery itself is always enclosed in parentheses.
 \section{Practical part}
-Find the branch where Ann works. Include at least columns Street and City
-from Branch table. If you want to include column FirstName from Staff table,
-you need to use JOIN operation.
+\begin{itemize}
+\item Show the branch where Ann works as well as the Street and City
+of that Branch.
 \database{1-Ann-branch.sql}
 \begin{figure}[hbtp]
 	\includegraphics[scale=1]{1-Ann-branch.PNG}
 	\end{figure}
-List the Staff who work in the branch at ’32 Manse Road’… and only those
-whose position is ‘Assistant’ in that same branch. Include at least columns
-FirstName and FamilyName from Staff table. If you want to include column
-Street information from Branch table, you need to use JOIN operation.
+\item Show any Staff who works in the branch at ’32 Manse Road’ and only those
+whose position is ‘Assistant’ in that same branch.
 \database{2-branch-position.sql}
 \begin{figure}[hbtp]
 	\includegraphics[scale=1]{2-branch-position.PNG}
@@ -88,4 +78,5 @@ columns FirstName and FamilyName from Client table.
 \begin{figure}[hbtp]
 	\includegraphics[scale=1]{8-view-flat.PNG}
 	\end{figure}
+\end{itemize}	
 \end{document}
