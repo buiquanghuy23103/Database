@@ -3,15 +3,22 @@
 \begin{document}
 \intro{DATABASE}{Subqueries}
 \section{Subqueries}
-A subquery is a query that is nested inside a SELECT, INSERT, UPDATE, or DELETE statement, or inside another subquery. A subquery can be used anywhere an expression is allowed. A subquery is also called an inner query or inner select, while the statement containing a subquery is also called an outer query or outer select. The following shows an example of subqueries:
-\begin{lstlisting}[language=SQL,style=cool]
-SELECT Name
-FROM AdventureWorks2008R2.Production.Product
-WHERE ListPrice =
-    (SELECT ListPrice
-     FROM AdventureWorks2008R2.Production.Product
-     WHERE Name = 'Chainring Bolts' );
-\end{lstlisting}
+A subquery is a complete SELECT statement embedded within another SELECT statement. The results of this \emph{inner} SELECT statement  (or \emph{subselect}) are used in the outer statement to help determine the contents of the final results. A subselect can be used in the WHERE and HAVING clauses of an outer SELECT statement, where it is called a \emph{subquery} or \emph{nested query}. There are three types of subquery:
+\begin{itemize}
+\item A \emph{scalar subquery} returns a single column and a single row, that is, a single value (Listing \ref{scalar-subquery}).
+\item A \emph{row subquery} returns multiple columns, but only a single row.
+\item A \emph{table subquery} returns multiple columns and multiple rows. A table subquery can be used as an operand for the IN predicate.
+\end{itemize}
+\begin{listing}
+\begin{minted}{sql}
+SELECT staffNo, fName, lName, position
+FROM Staff
+WHERE branchNo =(SELECT branchNo
+     		FROM Branch
+     		WHERE street = '163 Main St' );
+\end{minted}
+\caption{A scalar subquery}\label{scalar-subquery}
+\end{listing}
 Many Transact-SQL statements that include subqueries can be alternatively formulated as joins. The following is an example showing a join SELECT that return the same result set as the previous example:
 \begin{lstlisting}[language=SQL,style=cool]
 SELECT Prd1. Name
