@@ -1,4 +1,5 @@
-SELECT Staff.FirstName, Staff.FamilyName, Branch.City, Branch.Street
+SELECT City, Street
 FROM Branch
-JOIN Staff ON Branch.Id=Staff.BranchId
-WHERE Staff.FirstName='Ann'
+WHERE BranchId = (SELECT BranchId
+                  FROM Staff
+                  WHERE FirstName='Ann');
