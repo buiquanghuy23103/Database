@@ -1,4 +1,6 @@
-SELECT Staff.FirstName, Staff.Position, Branch.City, Branch.Street
-FROM Branch
-FULL OUTER JOIN Staff ON Branch.Id=Staff.BranchId
-WHERE Branch.Street='32 Manse Road' AND Staff.Position='Assistant'
+SELECT FirstName,FamilyName
+FROM Staff
+WHERE BranchId = (SELECT Id
+					FROM Branch
+					WHERE Street = '32 Manse Road')
+		AND Position = 'Assistant';

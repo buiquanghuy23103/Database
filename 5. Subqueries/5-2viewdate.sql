@@ -1,4 +1,5 @@
-SELECT DISTINCT Client.FirstName,Client.FamilyName,Viewing.ViewDate
+SELECT FirstName,FamilyName
 FROM Client
-FULL OUTER JOIN Viewing ON Client.Id=Viewing.ClientId
-WHERE Viewing.ViewDate='2018-06-15' OR Viewing.ViewDate='2018-06-16'
+WHERE Id IN (SELECT ClientId
+			FROM Viewing
+			WHERE ViewDate = '2018-06-15' OR ViewDate = '2018-06-16');

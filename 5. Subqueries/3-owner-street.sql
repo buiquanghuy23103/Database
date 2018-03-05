@@ -1,4 +1,5 @@
-SELECT PrivateOwner.FirstName,PrivateOwner.FamilyName,PropertyForRent.Street
+SELECT FirstName,FamilyName
 FROM PrivateOwner
-FULL OUTER JOIN PropertyForRent ON PrivateOwner.Id=PropertyForRent.PrivateOwnerId
-WHERE PropertyForRent.Street='Slippery Lane 16'
+WHERE Id = (SELECT PrivateOwnerId
+			FROM PropertyForRent
+			WHERE Street = 'Slippery Lane 16');
