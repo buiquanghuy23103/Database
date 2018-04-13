@@ -1,0 +1,30 @@
+﻿<Window x:Class="DBKevin13.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DBKevin13"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <DataGrid Name="myDisplay" AutoGenerateColumns="False" HorizontalAlignment="Stretch" ColumnWidth="*"/>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <ComboBox Name="myChoise" SelectionChanged="myChoise_SelectionChanged" FontSize="30" SelectedIndex="-1">
+                <ComboBoxItem>Nothing</ComboBoxItem>
+                <ComboBoxItem>All Staff</ComboBoxItem>
+                <ComboBoxItem>Staff in ABC order</ComboBoxItem>
+                <ComboBoxItem>All Estate Agents</ComboBoxItem>
+                <ComboBoxItem>Clients and Comments</ComboBoxItem>
+                <ComboBoxItem>Target by Type</ComboBoxItem>
+            </ComboBox>
+        </Grid>
+    </Grid>
+</Window>

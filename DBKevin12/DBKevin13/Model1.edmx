@@ -1,0 +1,484 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DREAMHOMEModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Branch">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Street" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Postcode" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FamilyName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TelephoneNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PreferredType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MaxRentPossible" Type="decimal" Precision="8" Scale="2" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="254" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PrivateOwner">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FamilyName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Street" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Postcode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TelephoneNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="254" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PropertyForRent">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Street" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Postcode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TypeOfProperty" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="NumberOfRooms" Type="int" Nullable="false" />
+          <Property Name="Rent" Type="decimal" Precision="8" Scale="2" Nullable="false" />
+          <Property Name="PrivateOwnerId" Type="int" Nullable="false" />
+          <Property Name="StaffId" Type="int" />
+          <Property Name="BranchId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Staff">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FamilyName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Position" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Gender" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="DateOfBirth" Type="datetime" Nullable="false" />
+          <Property Name="Salary" Type="decimal" Precision="8" Scale="2" Nullable="false" />
+          <Property Name="BranchId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Viewing">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClientId" Type="int" Nullable="false" />
+          <Property Name="PropertyForRentId" Type="int" Nullable="false" />
+          <Property Name="ViewDate" Type="datetime" Nullable="false" />
+          <Property Name="CommentsGiven" Type="nvarchar" MaxLength="254" />
+        </EntityType>
+        <Association Name="FK_PropertyForRent_Branch">
+          <End Role="Branch" Type="Self.Branch" Multiplicity="1" />
+          <End Role="PropertyForRent" Type="Self.PropertyForRent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branch">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PropertyForRent">
+              <PropertyRef Name="BranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PropertyForRent_PrivateOwner">
+          <End Role="PrivateOwner" Type="Self.PrivateOwner" Multiplicity="1" />
+          <End Role="PropertyForRent" Type="Self.PropertyForRent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PrivateOwner">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PropertyForRent">
+              <PropertyRef Name="PrivateOwnerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PropertyForRent_Staff">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="0..1" />
+          <End Role="PropertyForRent" Type="Self.PropertyForRent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PropertyForRent">
+              <PropertyRef Name="StaffId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Staff_Branch">
+          <End Role="Branch" Type="Self.Branch" Multiplicity="1" />
+          <End Role="Staff" Type="Self.Staff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branch">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Staff">
+              <PropertyRef Name="BranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Viewing_Client">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="Viewing" Type="Self.Viewing" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Viewing">
+              <PropertyRef Name="ClientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Viewing_PropertyForRent">
+          <End Role="PropertyForRent" Type="Self.PropertyForRent" Multiplicity="1" />
+          <End Role="Viewing" Type="Self.Viewing" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PropertyForRent">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Viewing">
+              <PropertyRef Name="PropertyForRentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DREAMHOMEModelStoreContainer">
+          <EntitySet Name="Branch" EntityType="Self.Branch" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PrivateOwner" EntityType="Self.PrivateOwner" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PropertyForRent" EntityType="Self.PropertyForRent" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Staff" EntityType="Self.Staff" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Viewing" EntityType="Self.Viewing" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_PropertyForRent_Branch" Association="Self.FK_PropertyForRent_Branch">
+            <End Role="Branch" EntitySet="Branch" />
+            <End Role="PropertyForRent" EntitySet="PropertyForRent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PropertyForRent_PrivateOwner" Association="Self.FK_PropertyForRent_PrivateOwner">
+            <End Role="PrivateOwner" EntitySet="PrivateOwner" />
+            <End Role="PropertyForRent" EntitySet="PropertyForRent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PropertyForRent_Staff" Association="Self.FK_PropertyForRent_Staff">
+            <End Role="Staff" EntitySet="Staff" />
+            <End Role="PropertyForRent" EntitySet="PropertyForRent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Staff_Branch" Association="Self.FK_Staff_Branch">
+            <End Role="Branch" EntitySet="Branch" />
+            <End Role="Staff" EntitySet="Staff" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Viewing_Client" Association="Self.FK_Viewing_Client">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="Viewing" EntitySet="Viewing" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Viewing_PropertyForRent" Association="Self.FK_Viewing_PropertyForRent">
+            <End Role="PropertyForRent" EntitySet="PropertyForRent" />
+            <End Role="Viewing" EntitySet="Viewing" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DREAMHOMEModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Branch">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Street" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Postcode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="PropertyForRents" Relationship="Self.FK_PropertyForRent_Branch" FromRole="Branch" ToRole="PropertyForRent" />
+          <NavigationProperty Name="Staffs" Relationship="Self.FK_Staff_Branch" FromRole="Branch" ToRole="Staff" />
+        </EntityType>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FamilyName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TelephoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PreferredType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MaxRentPossible" Type="Decimal" Precision="8" Scale="2" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="254" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Viewings" Relationship="Self.FK_Viewing_Client" FromRole="Client" ToRole="Viewing" />
+        </EntityType>
+        <EntityType Name="PrivateOwner">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FamilyName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Street" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Postcode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TelephoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="254" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="PropertyForRents" Relationship="Self.FK_PropertyForRent_PrivateOwner" FromRole="PrivateOwner" ToRole="PropertyForRent" />
+        </EntityType>
+        <EntityType Name="PropertyForRent">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Street" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Postcode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TypeOfProperty" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NumberOfRooms" Type="Int32" Nullable="false" />
+          <Property Name="Rent" Type="Decimal" Precision="8" Scale="2" Nullable="false" />
+          <Property Name="PrivateOwnerId" Type="Int32" Nullable="false" />
+          <Property Name="StaffId" Type="Int32" />
+          <Property Name="BranchId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Branch" Relationship="Self.FK_PropertyForRent_Branch" FromRole="PropertyForRent" ToRole="Branch" />
+          <NavigationProperty Name="PrivateOwner" Relationship="Self.FK_PropertyForRent_PrivateOwner" FromRole="PropertyForRent" ToRole="PrivateOwner" />
+          <NavigationProperty Name="Staff" Relationship="Self.FK_PropertyForRent_Staff" FromRole="PropertyForRent" ToRole="Staff" />
+          <NavigationProperty Name="Viewings" Relationship="Self.FK_Viewing_PropertyForRent" FromRole="PropertyForRent" ToRole="Viewing" />
+        </EntityType>
+        <EntityType Name="Staff">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FamilyName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Position" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Gender" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="DateOfBirth" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Salary" Type="Decimal" Precision="8" Scale="2" Nullable="false" />
+          <Property Name="BranchId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Branch" Relationship="Self.FK_Staff_Branch" FromRole="Staff" ToRole="Branch" />
+          <NavigationProperty Name="PropertyForRents" Relationship="Self.FK_PropertyForRent_Staff" FromRole="Staff" ToRole="PropertyForRent" />
+        </EntityType>
+        <EntityType Name="Viewing">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClientId" Type="Int32" Nullable="false" />
+          <Property Name="PropertyForRentId" Type="Int32" Nullable="false" />
+          <Property Name="ViewDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CommentsGiven" Type="String" MaxLength="254" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Client" Relationship="Self.FK_Viewing_Client" FromRole="Viewing" ToRole="Client" />
+          <NavigationProperty Name="PropertyForRent" Relationship="Self.FK_Viewing_PropertyForRent" FromRole="Viewing" ToRole="PropertyForRent" />
+        </EntityType>
+        <Association Name="FK_PropertyForRent_Branch">
+          <End Role="Branch" Type="Self.Branch" Multiplicity="1" />
+          <End Role="PropertyForRent" Type="Self.PropertyForRent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branch">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PropertyForRent">
+              <PropertyRef Name="BranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Staff_Branch">
+          <End Role="Branch" Type="Self.Branch" Multiplicity="1" />
+          <End Role="Staff" Type="Self.Staff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branch">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Staff">
+              <PropertyRef Name="BranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Viewing_Client">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="Viewing" Type="Self.Viewing" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Viewing">
+              <PropertyRef Name="ClientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PropertyForRent_PrivateOwner">
+          <End Role="PrivateOwner" Type="Self.PrivateOwner" Multiplicity="1" />
+          <End Role="PropertyForRent" Type="Self.PropertyForRent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PrivateOwner">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PropertyForRent">
+              <PropertyRef Name="PrivateOwnerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PropertyForRent_Staff">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="0..1" />
+          <End Role="PropertyForRent" Type="Self.PropertyForRent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PropertyForRent">
+              <PropertyRef Name="StaffId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Viewing_PropertyForRent">
+          <End Role="PropertyForRent" Type="Self.PropertyForRent" Multiplicity="1" />
+          <End Role="Viewing" Type="Self.Viewing" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PropertyForRent">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Viewing">
+              <PropertyRef Name="PropertyForRentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DREAMHOMEEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Branches" EntityType="Self.Branch" />
+          <EntitySet Name="Clients" EntityType="Self.Client" />
+          <EntitySet Name="PrivateOwners" EntityType="Self.PrivateOwner" />
+          <EntitySet Name="PropertyForRents" EntityType="Self.PropertyForRent" />
+          <EntitySet Name="Staffs" EntityType="Self.Staff" />
+          <EntitySet Name="Viewings" EntityType="Self.Viewing" />
+          <AssociationSet Name="FK_PropertyForRent_Branch" Association="Self.FK_PropertyForRent_Branch">
+            <End Role="Branch" EntitySet="Branches" />
+            <End Role="PropertyForRent" EntitySet="PropertyForRents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Staff_Branch" Association="Self.FK_Staff_Branch">
+            <End Role="Branch" EntitySet="Branches" />
+            <End Role="Staff" EntitySet="Staffs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Viewing_Client" Association="Self.FK_Viewing_Client">
+            <End Role="Client" EntitySet="Clients" />
+            <End Role="Viewing" EntitySet="Viewings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PropertyForRent_PrivateOwner" Association="Self.FK_PropertyForRent_PrivateOwner">
+            <End Role="PrivateOwner" EntitySet="PrivateOwners" />
+            <End Role="PropertyForRent" EntitySet="PropertyForRents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PropertyForRent_Staff" Association="Self.FK_PropertyForRent_Staff">
+            <End Role="Staff" EntitySet="Staffs" />
+            <End Role="PropertyForRent" EntitySet="PropertyForRents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Viewing_PropertyForRent" Association="Self.FK_Viewing_PropertyForRent">
+            <End Role="PropertyForRent" EntitySet="PropertyForRents" />
+            <End Role="Viewing" EntitySet="Viewings" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DREAMHOMEModelStoreContainer" CdmEntityContainer="DREAMHOMEEntities">
+          <EntitySetMapping Name="Branches">
+            <EntityTypeMapping TypeName="DREAMHOMEModel.Branch">
+              <MappingFragment StoreEntitySet="Branch">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Street" ColumnName="Street" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Postcode" ColumnName="Postcode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Clients">
+            <EntityTypeMapping TypeName="DREAMHOMEModel.Client">
+              <MappingFragment StoreEntitySet="Client">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="FamilyName" ColumnName="FamilyName" />
+                <ScalarProperty Name="TelephoneNumber" ColumnName="TelephoneNumber" />
+                <ScalarProperty Name="PreferredType" ColumnName="PreferredType" />
+                <ScalarProperty Name="MaxRentPossible" ColumnName="MaxRentPossible" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PrivateOwners">
+            <EntityTypeMapping TypeName="DREAMHOMEModel.PrivateOwner">
+              <MappingFragment StoreEntitySet="PrivateOwner">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="FamilyName" ColumnName="FamilyName" />
+                <ScalarProperty Name="Street" ColumnName="Street" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Postcode" ColumnName="Postcode" />
+                <ScalarProperty Name="TelephoneNumber" ColumnName="TelephoneNumber" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PropertyForRents">
+            <EntityTypeMapping TypeName="DREAMHOMEModel.PropertyForRent">
+              <MappingFragment StoreEntitySet="PropertyForRent">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Street" ColumnName="Street" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Postcode" ColumnName="Postcode" />
+                <ScalarProperty Name="TypeOfProperty" ColumnName="TypeOfProperty" />
+                <ScalarProperty Name="NumberOfRooms" ColumnName="NumberOfRooms" />
+                <ScalarProperty Name="Rent" ColumnName="Rent" />
+                <ScalarProperty Name="PrivateOwnerId" ColumnName="PrivateOwnerId" />
+                <ScalarProperty Name="StaffId" ColumnName="StaffId" />
+                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Staffs">
+            <EntityTypeMapping TypeName="DREAMHOMEModel.Staff">
+              <MappingFragment StoreEntitySet="Staff">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="FamilyName" ColumnName="FamilyName" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="Salary" ColumnName="Salary" />
+                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Viewings">
+            <EntityTypeMapping TypeName="DREAMHOMEModel.Viewing">
+              <MappingFragment StoreEntitySet="Viewing">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+                <ScalarProperty Name="PropertyForRentId" ColumnName="PropertyForRentId" />
+                <ScalarProperty Name="ViewDate" ColumnName="ViewDate" />
+                <ScalarProperty Name="CommentsGiven" ColumnName="CommentsGiven" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
