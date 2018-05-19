@@ -1,0 +1,2 @@
+ON DELETE CASCADE: When delete a parent row, the related children are deleted as well.
+Object relation mapper
